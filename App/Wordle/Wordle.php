@@ -16,7 +16,7 @@ class Wordle
 
     public static function existingGame()
     {
-        if (! $_COOKIE["WordleGame"]){
+        if (isset($_COOKIE["WordleGame"])){
             return null;
         }
         $gameCookie = $_COOKIE["WordleGame"];
@@ -29,5 +29,15 @@ class Wordle
         $game = new Game();
         $gameSerialized = serialize($game);
         setcookie("WordleGame", $gameSerialized, time() + 3600);
+        return $game;
+    }
+
+    public static function hasProposal(){
+        return isset($_POST['wordle']);
+    }
+
+    public static function getProposal(){
+        $proposalWord = implode('',$_POST['wordle']);
+        return new Word($proposalWord);
     }
 }

@@ -13,24 +13,30 @@ class Game
     public Word $word;
     public int $attempts;
     public array $proposals;
-    private $checkSteps;
+    private object $checkSteps;
 
     public function __construct()
     {
         $this->attempts = 6;
         $this->proposals = [];
-        $this->word = Word::get();
+        $list = new WordsList();
+        $this->word = new Word($list->pickWord());
     }
 
-    public function check(){
+    public function check()
+    {
         $this->setCheckSteps();
-        $result = $this->checkSteps->handle($this);
-        die();
+        return $this->checkSteps->handle($this);
     }
 
-    public function setCheckSteps() {
+    public function setCheckSteps()
+    {
         $checkLength = new CheckLengthAbstractHandler();
         $checkProposals = new CheckProposalsAbstractHandler();
         $this->checkSteps = $checkLength->setNext($checkProposals);
+    }
+
+    public function addProposal($proposal){
+        return $this->proposals[] = $proposal;
     }
 }

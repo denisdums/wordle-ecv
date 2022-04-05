@@ -6,36 +6,40 @@ namespace App\Wordle;
 
 class WordsList
 {
-    public static ?object $_instance = null;
     public array $list;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->initList();
     }
-    public static function get(): array
-    {
-        if (is_null(self::$_instance)) {
-            self::$_instance = new self();
-        }
-        return self::$_instance->getList();
-    }
 
-    public function initList() {
+    public function initList()
+    {
         $list = $this->loadList();
         $this->setList($list);
     }
 
-    public function loadList() {
+    public function loadList()
+    {
         $wordsFileContent = file_get_contents(WORDS_FILE);
         $wordsObject = json_decode($wordsFileContent);
         return $wordsObject->words ?? null;
     }
 
-    public function setList($list) {
+    public function setList($list)
+    {
         $this->list = $list;
     }
 
-    public function getList() {
+    public function getList()
+    {
         return $this->list;
+    }
+
+    public function pickWord()
+    {
+        $list = $this->getList();
+        $randomKey = array_rand($list, 1);
+        return $list[$randomKey];
     }
 }

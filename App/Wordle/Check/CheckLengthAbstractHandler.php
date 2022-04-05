@@ -10,10 +10,9 @@ class CheckLengthAbstractHandler extends AbstractHandler
 {
     public function handle(Game $game): ?string
     {
-        if (!isset($_POST['wordle']) && count($_POST['wordle']) != $game->word->length){
-            $proposal = $_POST['wordle'];
-            var_dump($proposal);
-            return 'cest la merde';
+        if(true){
+            echo 'ici';
+            return null;
         } else {
             return parent::handle($game);
         }

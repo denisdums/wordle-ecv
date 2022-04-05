@@ -10,9 +10,9 @@ class CheckProposalsAbstractHandler extends AbstractHandler
 {
     public function handle(Game $game): ?string
     {
-        if ($game->proposals > 0){
-            var_dump($game->proposals);
-            return '';
+        if ($game->attempts < 0){
+            var_dump('1');
+            return 'aa';
         } else {
             return parent::handle($game);
         }
