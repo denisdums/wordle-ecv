@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Wordle;
 
-use App\Wordle\Check\CheckLengthAbstractHandler;
-use App\Wordle\Check\CheckProposalsAbstractHandler;
-use App\Wordle\Check\AbstractHandler;
-
 class Game
 {
     public Word $word;
     public int $attempts;
     public array $proposals;
-    private object $checkSteps;
 
     public function __construct()
     {
@@ -23,20 +18,47 @@ class Game
         $this->word = new Word($list->pickWord());
     }
 
-    public function check()
+    public function checkLastProposal()
     {
-        $this->setCheckSteps();
-        return $this->checkSteps->handle($this);
+        $proposal = $this->getLastProposal();
+
+        if ($proposal->checkWord($this->word)) {
+            $proposal->setStatus(1);
+        }
+
+        $proposal->checkLetters($this->word);
+
+        $this->attempts = $this->attempts - 1;
+        $this->updateLastProposal($proposal);
     }
 
-    public function setCheckSteps()
+    public function addProposal($proposal)
     {
-        $checkLength = new CheckLengthAbstractHandler();
-        $checkProposals = new CheckProposalsAbstractHandler();
-        $this->checkSteps = $checkLength->setNext($checkProposals);
+        $this->proposals[] = $proposal;
     }
 
-    public function addProposal($proposal){
-        return $this->proposals[] = $proposal;
+    public function hasProposals()
+    {
+        return count($this->proposals) > 0;
+    }
+
+    public function getLastProposal(): ?Proposal
+    {
+        return isset($this->proposals[$this->getLastProposalKey()]) ? $this->proposals[$this->getLastProposalKey()] : null;
+    }
+
+    public function getLastProposalKey(): ?int
+    {
+        return count($this->proposals);
+    }
+
+    public function updateLastProposal(Proposal $proposal)
+    {
+        $this->updateProposal($this->getLastProposalKey(), $proposal);
+    }
+
+    public function updateProposal(int $proposalKey, Proposal $proposal)
+    {
+        $this->proposals[$proposalKey] = $proposal;
     }
 }

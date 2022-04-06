@@ -15,13 +15,20 @@ class Home implements Controller
 
     public function render()
     {
-        $game = Wordle::init();
+        $wordle = new Wordle();
+        $game = $wordle->getGame();
+        var_dump(count( $game->proposals));
 
-        if (Wordle::hasProposal()){
-            $game->addProposal(Wordle::getProposal());
-            $game->check();
+        if ($wordle->hasNewProposal()) {
+            // add the new proposal to the game
+            $game->addProposal($wordle->getNewProposal());
+            // check the proposal
+            //$game->checkLastProposal();
+            // update the game
+            $wordle->setGame($game);
         }
 
+        $wordle->save();
         $data = ['game' => $game];
         View::render($this->view, $data);
     }

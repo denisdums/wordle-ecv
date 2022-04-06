@@ -7,6 +7,7 @@ namespace App\Routing;
 
 use App\Controllers\Controller;
 use App\Controllers\Home;
+use App\Controllers\Reset;
 
 class Router
 {
@@ -17,6 +18,7 @@ class Router
     public array $routes = [
         '/' => Home::class,
         '/home' => Home::class,
+        '/reset' => Reset::class,
         '/404' => Home::class,
     ];
 

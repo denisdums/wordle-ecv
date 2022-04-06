@@ -6,38 +6,66 @@ namespace App\Wordle;
 
 class Wordle
 {
-    public static Game $game;
+    public Game $game;
+    public string $cookieName = 'WordleGame';
 
-    public static function init()
+    public function __construct()
     {
-        self::$game = self::existingGame() ?? self::initGame();
-        return self::$game;
+        $this->setGame($this->existingGame() ?? new Game());
     }
 
-    public static function existingGame()
+    public function getGame(): Game
     {
-        if (isset($_COOKIE["WordleGame"])){
-            return null;
+        return $this->game;
+    }
+
+    public function setGame(Game $game)
+    {
+        $this->game = $game;
+    }
+
+    public function existingGame()
+    {
+        if (isset($_COOKIE[$this->cookieName])) {
+            $gameCookie = $_COOKIE[$this->cookieName];
+            $gameCookieObject = unserialize($gameCookie);
+            return is_a($gameCookieObject, 'App\Wordle\Game') ? $gameCookieObject : null;
         }
-        $gameCookie = $_COOKIE["WordleGame"];
-        $gameCookieObject = unserialize($gameCookie);
-        return is_a($gameCookieObject, 'App\Wordle\Game') ? $gameCookieObject : null;
+
+        /*if (isset($_SESSION[$this->cookieName])) {
+            $gameCookie = $_SESSION[$this->cookieName];
+            $gameCookieObject = unserialize($gameCookie);
+            return is_a($gameCookieObject, 'App\Wordle\Game') ? $gameCookieObject : null;
+        }*/
+
+        return null;
     }
 
-    public static function initGame()
+    public function save()
     {
-        $game = new Game();
-        $gameSerialized = serialize($game);
-        setcookie("WordleGame", $gameSerialized, time() + 3600);
-        return $game;
+        var_dump('je save avec ' . count($this->game->proposals));
+        $gameSerialized = serialize($this->game);
+        setcookie($this->cookieName, $gameSerialized, time() + 3600 , '/');
+        //$_SESSION[$this->cookieName] = $gameSerialized;
+        return $this->game;
     }
 
-    public static function hasProposal(){
+    public function reset()
+    {
+        if (isset($_COOKIE[$this->cookieName])) {
+            unset($_COOKIE[$this->cookieName]);
+            setcookie($this->cookieName, '', -1);
+        }
+    }
+
+    public function hasNewProposal()
+    {
         return isset($_POST['wordle']);
     }
 
-    public static function getProposal(){
-        $proposalWord = implode('',$_POST['wordle']);
-        return new Word($proposalWord);
+    public function getNewProposal()
+    {
+        $proposalWord = implode('', $_POST['wordle']);
+        return new Proposal($proposalWord);
     }
 }
