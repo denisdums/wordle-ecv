@@ -6,19 +6,28 @@ namespace App\Wordle;
 
 class Proposal extends Word
 {
-    public function checkWord(Word $proposal): bool
+    /**
+     * Check if proposal word is the same of a given word
+     * @param Word $word
+     * @return bool
+     */
+    public function checkWord(Word $word): bool
     {
-        return $this->word === $proposal->word;
+        return $this->getWord() === $word->getWord();
     }
 
+    /**
+     * Check and update the proposal array letters for a given word
+     * @param Word $word
+     */
     public function checkLetters(Word $word)
     {
         $lettersChecked = [];
 
-        foreach ($this->letters as $position => $letter) {
+        foreach ($this->getLetters() as $letter) {
             $lettersChecked[] = $letter->check($word);
         }
 
-        $this->letters = $lettersChecked;
+        $this->setLetters($lettersChecked);
     }
 }

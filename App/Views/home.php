@@ -1,25 +1,25 @@
 <?php
 $game = $data['game'] ?? null;
 if ($game):?>
-    <h1>Le Wordle : <?= $game->word->word ?></h1>
-    <span>Nombre de tentatives restantes : <?= $game->attempts ?>/6</span>
+    <h1>Le Wordle : <?= $game->word->getWord() ?></h1>
+    <span>Nombre de tentatives restantes : <?= $game->getAttempts() ?>/6</span>
 
     <div>
-        <?php foreach ($game->proposals as $proposal): ?>
+        <?php foreach ($game->getProposals() as $proposal): ?>
             <div class="proposal letters">
-                <?php foreach ($proposal->letters as $letter): ?>
-                    <span class="letter letter-status-<?= $letter->getStatus() ?>"><?= $letter->letter ?></span>
+                <?php foreach ($proposal->getLetters() as $letter): ?>
+                    <span class="letter letter-status-<?= $letter->getStatus() ?>"><?= $letter->getLetter() ?></span>
                 <?php endforeach; ?>
             </div>
         <?php endforeach; ?>
     </div>
 
-    <?php if ($game->attempts > 0 && !$game->getLastProposal() || ($game->getLastProposal() && $game->getLastProposal()->getStatus() != 1)): ?>
+    <?php if ($game->getAttempts() > 0 && !$game->getLastProposal() || ($game->getLastProposal() && $game->getLastProposal()->getStatus() != 1)): ?>
         <form action="/" method="post">
             <div class="inputs">
-                <?php for ($i = 1; $i <= $game->word->length; $i++): ?>
+                <?php for ($i = 1; $i <= $game->word->getLength(); $i++): ?>
                     <div class="square input">
-                        <input type="text" name="wordle[]" maxlength="1">
+                        <input type="text" name="wordle[]" maxlength="1" required>
                     </div>
                 <?php endfor; ?>
             </div>
@@ -28,12 +28,12 @@ if ($game):?>
     <?php endif; ?>
 
     <?php if ($game->getLastProposal() && $game->getLastProposal()->getStatus() === 1): ?>
-        <h2>Félicitation vous avez gagné en <?= $game->attempts ?> coup<?= $game->attempts > 1 ? 's' : '' ?> ! le mot
-            était <?= $game->word->word ?></h2>
+        <h2>Félicitation vous avez gagné en <?= 6 - $game->getAttempts() ?> coup<?= $game->getAttempts() > 1 ? 's' : '' ?> ! le mot
+            était <?= $game->word->getWord() ?></h2>
     <?php endif; ?>
 
-    <?php if ($game->attempts === 0): ?>
-        <h2>Mince, vous avez perdu ! le mot était "<?= $game->word->word ?>"</h2>
+    <?php if ($game->getAttempts() === 0): ?>
+        <h2>Mince, vous avez perdu ! le mot était "<?= $game->word->getWord() ?>"</h2>
     <?php endif; ?>
 
     <a href="/reset">Recommencer une nouvelle partie</a>
