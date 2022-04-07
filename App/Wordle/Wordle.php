@@ -117,4 +117,15 @@ class Wordle
             setcookie($this->cookieName, '', -1);
         }
     }
+
+    /**
+     * Process proposal checking and prevent same proposal on refresh
+     * @return void
+     */
+    public function processProposal(){
+        if ($this->hasNewProposal() && !$this->getGame()->getLastProposal() || ($this->game->getLastProposal() && $this->getNewProposal()->getWord() != $this->getGame()->getLastProposal()->getWord())){
+            $this->game->addProposal($this->getNewProposal());
+            $this->game->checkLastProposal();
+        }
+    }
 }

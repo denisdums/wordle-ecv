@@ -15,17 +15,9 @@ class Home implements Controller
     public function render()
     {
         $wordle = new Wordle();
-        $game = $wordle->getGame();
-
-        if ($wordle->hasNewProposal()) {
-            $game->addProposal($wordle->getNewProposal());
-            $game->checkLastProposal();
-            $wordle->setGame($game);
-        }
-
+        $wordle->processProposal();
         $wordle->save();
-
-        $data = ['game' => $game];
+        $data = ['game' => $wordle->getGame()];
         View::render($this->view, $data);
     }
 
