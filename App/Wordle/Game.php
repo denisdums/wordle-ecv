@@ -40,7 +40,7 @@ class Game
 
         $proposal->checkLetters($this->getWord());
 
-        $this->setAttempts($this->getAttempts() -1);
+        $this->setAttempts($this->getAttempts() - 1);
         $this->updateLastProposal($proposal);
     }
 
@@ -141,5 +141,13 @@ class Game
     public function setProposals(array $proposals): void
     {
         $this->proposals = $proposals;
+    }
+
+    /**
+     * Retrieve current Game status
+     */
+    public function getGameStatus(): ?int
+    {
+        return $this->getLastProposal() ? $this->getLastProposal()->getStatus() : 0;
     }
 }

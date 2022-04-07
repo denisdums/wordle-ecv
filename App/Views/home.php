@@ -1,7 +1,11 @@
 <?php
 $game = $data['game'] ?? null;
 if ($game):?>
-    <h1>Le Wordle : <?= $game->word->getWord() ?></h1>
+    <header>
+        <h1>Le Wordle</h1>
+        <a href="/reset" class="button button-orange">Recommencer</a>
+    </header>
+
     <span>Nombre de tentatives restantes : <?= $game->getAttempts() ?>/6</span>
 
     <div>
@@ -14,27 +18,29 @@ if ($game):?>
         <?php endforeach; ?>
     </div>
 
-    <?php if ($game->getAttempts() > 0 && !$game->getLastProposal() || ($game->getLastProposal() && $game->getLastProposal()->getStatus() != 1)): ?>
+    <?php if ($game->getAttempts() > 0 && $game->getGameStatus() != 1): ?>
         <form action="/" method="post">
             <div class="inputs">
                 <?php for ($i = 1; $i <= $game->word->getLength(); $i++): ?>
-                    <div class="square input">
-                        <input type="text" name="wordle[]" maxlength="1" required>
+                    <div class="square input-wrapper">
+                        <input id="<?= $i ?>" type="text" name="wordle[]" maxlength="1"
+                               required <?= $i === 1 ? 'autofocus' : '' ?>>
                     </div>
                 <?php endfor; ?>
             </div>
-            <input type="submit" value="Valider">
+            <input type="submit" value="Valider" class="button button-green submit-button">
         </form>
     <?php endif; ?>
 
     <?php if ($game->getLastProposal() && $game->getLastProposal()->getStatus() === 1): ?>
-        <h2>Félicitation vous avez gagné en <?= 6 - $game->getAttempts() ?> coup<?= $game->getAttempts() > 1 ? 's' : '' ?> ! le mot
-            était <?= $game->word->getWord() ?></h2>
+        <h2 class="game-status">Félicitation vous avez gagné en <?= 6 - $game->getAttempts() ?>
+            coup<?= $game->getAttempts() > 1 ? 's' : '' ?> ! le mot
+            était <span class="word-reveal">"<?= $game->word->getWord() ?>"</span></h2>
     <?php endif; ?>
 
-    <?php if ($game->getAttempts() === 0): ?>
-        <h2>Mince, vous avez perdu ! le mot était "<?= $game->word->getWord() ?>"</h2>
+    <?php if ($game->getAttempts() <= 0): ?>
+        <h2 class="game-status">Mince, vous avez perdu ! le mot était
+            <span class="word-reveal">"<?= $game->word->getWord() ?>"</span>
+        </h2>
     <?php endif; ?>
-
-    <a href="/reset">Recommencer une nouvelle partie</a>
 <?php endif; ?>

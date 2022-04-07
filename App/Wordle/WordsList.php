@@ -53,7 +53,7 @@ class WordsList
     public function pickWord(): string
     {
         $list = $this->getList();
-        $randomKey = array_rand($list, 1);
+        $randomKey = array_rand($list);
         return $list[$randomKey];
     }
 }

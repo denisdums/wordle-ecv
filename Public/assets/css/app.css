@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     background-color: #121921;
     color: #ffffff;
@@ -8,8 +14,15 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 600px;
     margin: 0 auto;
+    padding: 2rem 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .square {
@@ -23,10 +36,41 @@ body {
     padding-bottom: 100%;
 }
 
+.button {
+    padding: .5rem 2rem;
+    border-style: solid;
+    border-width: 2px;
+    transition: .150s all ease-in-out;
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.button-orange {
+    background-color: #f1c40f;
+    border-color: #f39c12;
+}
+
+.button-orange:hover {
+    background-color: #f39c12;
+}
+
+.button-green {
+    background-color: #2ecc71;
+    border-color: #27ae60;
+}
+
+.button-green:hover {
+    background-color: #27ae60;
+}
+
 form {
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+    margin-top: 2rem;
 }
 
 .inputs {
@@ -34,11 +78,25 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: .5rem;
 }
 
-.input {
+.input-wrapper {
     width: 100%;
+}
+
+.input-wrapper input {
+    transition: .150s all ease-in-out;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    transform: scale(1.1);
+}
+
+.submit-button {
+    display: block;
+    margin: 1rem auto 0 auto;
 }
 
 .square input {
@@ -49,13 +107,6 @@ form {
     left: 0;
     text-align: center;
     font-size: 2rem;
-}
-
-input[type='submit'] {
-    display: block;
-    padding: 0.5rem 2rem;
-    text-align: center;
-    margin: 2rem auto;
 }
 
 /**
@@ -89,4 +140,15 @@ input[type='submit'] {
 .letter-status-2 {
     background-color: #f1c40f;
     border-color: #f39c12;
+}
+
+.game-status {
+    text-align: center;
+    font-weight: 500;
+}
+
+.word-reveal {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #f1c40f;
 }
