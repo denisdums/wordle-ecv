@@ -1,46 +1,46 @@
-<?php
+<?php declare(strict_types=1);
 $game = $data['game'] ?? null;
-if ($game):?>
+if ($game) { ?>
     <header>
         <h1>Le Wordle</h1>
         <a href="/reset" class="button button-orange">Recommencer</a>
     </header>
 
-    <span>Nombre de tentatives restantes : <?= $game->getAttempts() ?>/6</span>
+    <span>Nombre de tentatives restantes : <?php echo $game->getAttempts(); ?>/6</span>
 
     <div>
-        <?php foreach ($game->getProposals() as $proposal): ?>
+        <?php foreach ($game->getProposals() as $proposal) { ?>
             <div class="proposal letters">
-                <?php foreach ($proposal->getLetters() as $letter): ?>
-                    <span class="letter letter-status-<?= $letter->getStatus() ?>"><?= $letter->getLetter() ?></span>
-                <?php endforeach; ?>
+                <?php foreach ($proposal->getLetters() as $letter) { ?>
+                    <span class="letter letter-status-<?php echo $letter->getStatus(); ?>"><?php echo $letter->getLetter(); ?></span>
+                <?php } ?>
             </div>
-        <?php endforeach; ?>
+        <?php } ?>
     </div>
 
-    <?php if ($game->getAttempts() > 0 && $game->getGameStatus() != 1): ?>
+    <?php if ($game->getAttempts() > 0 && 1 != $game->getGameStatus()) { ?>
         <form action="/" method="post">
             <div class="inputs">
-                <?php for ($i = 1; $i <= $game->word->getLength(); $i++): ?>
+                <?php for ($i = 1; $i <= $game->word->getLength(); ++$i) { ?>
                     <div class="square input-wrapper">
-                        <input id="<?= $i ?>" type="text" name="wordle[]" maxlength="1"
-                               required <?= $i === 1 ? 'autofocus' : '' ?>>
+                        <input id="<?php echo $i; ?>" type="text" name="wordle[]" maxlength="1"
+                               required <?php echo 1 === $i ? 'autofocus' : ''; ?>>
                     </div>
-                <?php endfor; ?>
+                <?php } ?>
             </div>
             <input type="submit" value="Valider" class="button button-green submit-button">
         </form>
-    <?php endif; ?>
+    <?php } ?>
 
-    <?php if ($game->getLastProposal() && $game->getLastProposal()->getStatus() === 1): ?>
-        <h2 class="game-status">Félicitation vous avez gagné en <?= 6 - $game->getAttempts() ?>
-            coup<?= $game->getAttempts() > 1 ? 's' : '' ?> ! le mot
-            était <span class="word-reveal">"<?= $game->word->getWord() ?>"</span></h2>
-    <?php endif; ?>
+    <?php if ($game->getLastProposal() && 1 === $game->getLastProposal()->getStatus()) { ?>
+        <h2 class="game-status">Félicitation vous avez gagné en <?php echo 6 - $game->getAttempts(); ?>
+            coup<?php echo $game->getAttempts() > 1 ? 's' : ''; ?> ! le mot
+            était <span class="word-reveal">"<?php echo $game->word->getWord(); ?>"</span></h2>
+    <?php } ?>
 
-    <?php if ($game->getAttempts() <= 0): ?>
+    <?php if ($game->getAttempts() <= 0) { ?>
         <h2 class="game-status">Mince, vous avez perdu ! le mot était
-            <span class="word-reveal">"<?= $game->word->getWord() ?>"</span>
+            <span class="word-reveal">"<?php echo $game->word->getWord(); ?>"</span>
         </h2>
-    <?php endif; ?>
-<?php endif; ?>
+    <?php } ?>
+<?php } ?>

@@ -12,8 +12,6 @@ class Letter
 
     /**
      * Letter constructor.
-     * @param string $letter
-     * @param int $position
      */
     public function __construct(string $letter, int $position)
     {
@@ -23,11 +21,9 @@ class Letter
     }
 
     /**
-     * Check letter position in a given word and update is status
-     * @param Word $word
-     * @return Letter
+     * Check letter position in a given word and update is status.
      */
-    public function check(Word $word): Letter
+    public function check(Word $word): self
     {
         $letterPositions = [];
 
@@ -37,29 +33,29 @@ class Letter
             }
         }
 
-        if (count($letterPositions) > 0) {
-            if (is_int(array_search($this->getPosition(), $letterPositions))) {
-                $this->setStatus(1);
-            } else {
-                $this->setStatus(2);
-            }
+        if (\count($letterPositions) === 0) {
+            return $this;
+        }
+
+        $this->setStatus(2);
+
+        if (\is_int(array_search($this->getPosition(), $letterPositions, true))) {
+            $this->setStatus(1);
         }
 
         return $this;
     }
 
     /**
-     * Letter setter
-     * @param string $letter
+     * Letter setter.
      */
-    public function setLetter(string $letter)
+    public function setLetter(string $letter): void
     {
         $this->letter = $letter;
     }
 
     /**
-     * Letter getter
-     * @return string|null
+     * Letter getter.
      */
     public function getLetter(): ?string
     {
@@ -68,38 +64,38 @@ class Letter
 
     /**
      * Status setter
-     * Status : 0 = not existing, 1 = existing and at good position, 2 = existing but not at good position
-     * @param int $status
+     * Status : 0 = not existing, 1 = existing and at good position, 2 = existing but not at good position.
      */
-    public function setStatus(int $status)
+    public function setStatus(int $status): void
     {
+        if (!in_array($status, [0, 1, 2])){
+            throw new \Exception('expected 0 = not existing, 1 = existing and at good position, 2 = existing but not at good position.');
+        }
+
         $this->status = $status;
     }
 
     /**
-     * Status getter
-     * @return int|null
+     * Status getter.
      */
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
         return $this->status ?? 0;
     }
 
     /**
-     * Position setter
-     * @param int $status
+     * Position setter.
      */
-    public function setPosition(int $status)
+    public function setPosition(int $position): void
     {
-        $this->position = $status;
+        $this->position = $position;
     }
 
     /**
-     * Position getter
-     * @return int|null
+     * Position getter.
      */
-    public function getPosition(): ?int
+    public function getPosition(): int
     {
-        return $this->position ?? null;
+        return $this->position ?? 0;
     }
 }

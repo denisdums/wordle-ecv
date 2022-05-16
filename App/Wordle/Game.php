@@ -12,14 +12,13 @@ class Game
 
     /**
      * Game constructor.
-     * @param string $word
      */
     public function __construct(string $word = '')
     {
         $this->setAttempts(6);
         $this->setProposals([]);
 
-        if ($word === '') {
+        if ('' === $word) {
             $list = new WordsList();
             $word = $list->pickWord();
         }
@@ -28,10 +27,11 @@ class Game
     }
 
     /**
-     * Check and update the last proposal compared with the game word
+     * Check and update the last proposal compared with the game word.
      */
-    public function checkLastProposal()
+    public function checkLastProposal(): void
     {
+        // et si tu retourne null ?
         $proposal = $this->getLastProposal();
 
         if ($proposal->checkWord($this->getWord())) {
@@ -44,20 +44,16 @@ class Game
         $this->updateLastProposal($proposal);
     }
 
-
     /**
-     * Add new proposal object in the proposals array
-     * @param Proposal $proposal
+     * Add new proposal object in the proposals array.
      */
-    public function addProposal(Proposal $proposal)
+    public function addProposal(Proposal $proposal): void
     {
         $this->proposals[] = $proposal;
     }
 
-
     /**
-     * Retrieve the last proposal in the proposal array
-     * @return Proposal|null
+     * Retrieve the last proposal in the proposal array.
      */
     public function getLastProposal(): ?Proposal
     {
@@ -65,33 +61,33 @@ class Game
     }
 
     /**
-     * Retrieve the last proposal key in the proposals array
+     * Retrieve the last proposal key in the proposals array.
+     *
      * @return Proposal|null
      */
     public function getLastProposalKey(): ?int
     {
-        return is_int(array_key_last($this->getProposals())) ? array_key_last($this->getProposals()) : null;
+        return \is_int(array_key_last($this->getProposals())) ? array_key_last($this->getProposals()) : null;
     }
 
     /**
-     * Replace the last proposal with a given Proposal object
+     * Replace the last proposal with a given Proposal object.
      */
-    public function updateLastProposal(Proposal $proposal)
+    public function updateLastProposal(Proposal $proposal): void
     {
         $this->updateProposal($this->getLastProposalKey(), $proposal);
     }
 
     /**
-     * Replace the update a proposal with a given Proposal object and array key
+     * Replace the update a proposal with a given Proposal object and array key.
      */
-    public function updateProposal(int $proposalKey, Proposal $proposal)
+    public function updateProposal(int $proposalKey, Proposal $proposal): void
     {
         $this->proposals[$proposalKey] = $proposal;
     }
 
     /**
-     * Word getter
-     * @return Word
+     * Word getter.
      */
     public function getWord(): Word
     {
@@ -99,8 +95,7 @@ class Game
     }
 
     /**
-     * Word Setter
-     * @param Word $word
+     * Word Setter.
      */
     public function setWord(Word $word): void
     {
@@ -108,8 +103,7 @@ class Game
     }
 
     /**
-     * Attempts getter
-     * @return int
+     * Attempts getter.
      */
     public function getAttempts(): int
     {
@@ -117,8 +111,7 @@ class Game
     }
 
     /**
-     * Attempts setter
-     * @param int $attempts
+     * Attempts setter.
      */
     public function setAttempts(int $attempts): void
     {
@@ -126,8 +119,7 @@ class Game
     }
 
     /**
-     * Proposal getter
-     * @return array
+     * Proposal getter.
      */
     public function getProposals(): array
     {
@@ -135,8 +127,7 @@ class Game
     }
 
     /**
-     * Proposals setter
-     * @param array $proposals
+     * Proposals setter.
      */
     public function setProposals(array $proposals): void
     {
@@ -144,7 +135,7 @@ class Game
     }
 
     /**
-     * Retrieve current Game status
+     * Retrieve current Game status.
      */
     public function getGameStatus(): ?int
     {
