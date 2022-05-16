@@ -13,7 +13,6 @@ class Word
 
     /**
      * Word constructor.
-     * @param string $word
      */
     public function __construct(string $word)
     {
@@ -24,17 +23,17 @@ class Word
     }
 
     /**
-     * Word setter
+     * Word setter.
+     *
      * @param $word
      */
-    public function setWord($word)
+    public function setWord($word): void
     {
         $this->word = $word;
     }
 
     /**
-     * Word getter
-     * @return string
+     * Word getter.
      */
     public function getWord(): string
     {
@@ -42,17 +41,17 @@ class Word
     }
 
     /**
-     * Length setter
+     * Length setter.
+     *
      * @param $word
      */
-    public function setLength($word)
+    public function setLength($word): void
     {
-        $this->length = strlen($word);
+        $this->length = \strlen($word);
     }
 
     /**
-     * Length getter
-     * @return int
+     * Length getter.
      */
     public function getLength(): int
     {
@@ -60,9 +59,7 @@ class Word
     }
 
     /**
-     * Letters processor
-     * @param string $word
-     * @return array
+     * Letters processor.
      */
     public function processLetters(string $word): array
     {
@@ -70,21 +67,20 @@ class Word
         foreach (str_split($word) as $position => $letter) {
             $lettersArray[] = new Letter($letter, $position);
         }
+
         return $lettersArray;
     }
 
     /**
-     * Letters setter
-     * @param array $lettersArray
+     * Letters setter.
      */
-    public function setLetters(array $lettersArray)
+    public function setLetters(array $lettersArray): void
     {
         $this->letters = $lettersArray;
     }
 
     /**
-     * Letters getter
-     * @return array
+     * Letters getter.
      */
     public function getLetters(): array
     {
@@ -93,20 +89,22 @@ class Word
 
     /**
      * Status setter
-     * Status : 0 = not found, 1 = found
-     * @param int $status
+     * Status : 0 = not found, 1 = found.
      */
-    public function setStatus(int $status)
+    public function setStatus(int $status): void
     {
+        if (!in_array($status, [0, 1])){
+            throw new \Exception('expected 0 = not found, 1 = found.');
+        }
+
         $this->status = $status;
     }
 
     /**
-     * Status getter
-     * @return int|null
+     * Status getter.
      */
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
-        return $this->status ?? null;
+        return $this->status;
     }
 }

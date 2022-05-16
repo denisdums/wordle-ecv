@@ -8,14 +8,12 @@ use App\Wordle\Wordle;
 
 class Reset implements Controller
 {
-
     public string $view = '';
 
-    public function render()
+    public function render(): void
     {
         $wordle = new Wordle();
         $wordle->reset();
         header('Location: /');
     }
-
 }

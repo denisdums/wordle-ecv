@@ -7,9 +7,7 @@ namespace App\Wordle;
 class Proposal extends Word
 {
     /**
-     * Check if proposal word is the same of a given word
-     * @param Word $word
-     * @return bool
+     * Check if proposal word is the same of a given word.
      */
     public function checkWord(Word $word): bool
     {
@@ -17,10 +15,9 @@ class Proposal extends Word
     }
 
     /**
-     * Check and update the proposal array letters for a given word
-     * @param Word $word
+     * Check and update the proposal array letters for a given word.
      */
-    public function checkLetters(Word $word)
+    public function checkLetters(Word $word): void
     {
         $lettersChecked = [];
 

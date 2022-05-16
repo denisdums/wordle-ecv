@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Routing;
 
-
 use App\Controllers\Controller;
 use App\Controllers\Home;
 use App\Controllers\Reset;
@@ -27,10 +26,9 @@ class Router
         self::$path = $_SERVER['PATH_INFO'] ?? '/';
     }
 
-
-    public static function getFromGlobals(): Router
+    public static function getFromGlobals(): self
     {
-        if (self::$router === null) {
+        if (null === self::$router) {
             self::$router = new self();
         }
 
@@ -43,10 +41,9 @@ class Router
         $controller = new $controllerClass();
 
         if (!$controller instanceof Controller) {
-            throw new \LogicException("controller $controllerClass should implement" . Controller::class);
+            throw new \LogicException("controller $controllerClass should implement".Controller::class);
         }
 
         return $controller;
     }
 }
-

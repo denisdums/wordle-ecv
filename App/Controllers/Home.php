@@ -9,10 +9,9 @@ use App\Wordle\Wordle;
 
 class Home implements Controller
 {
-
     public string $view = 'home';
 
-    public function render()
+    public function render(): void
     {
         $wordle = new Wordle();
         $wordle->processProposal();
@@ -20,5 +19,4 @@ class Home implements Controller
         $data = ['game' => $wordle->getGame()];
         View::render($this->view, $data);
     }
-
 }

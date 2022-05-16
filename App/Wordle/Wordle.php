@@ -19,34 +19,32 @@ class Wordle
         return $this->game;
     }
 
-    public function setGame(Game $game)
+    public function setGame(Game $game): void
     {
         $this->game = $game;
     }
 
     /**
-     * Check if we have submitted word
-     * @return bool
+     * Check if we have submitted word.
      */
     public function hasNewProposal(): bool
     {
-        return isset($_POST['wordle']);
+        return isset($_POST['wordle']); // devrait utiliser un objet tiers pour récupérer le post
     }
 
     /**
-     * Retrieve submitted word to a Proposal Object
-     * @return Proposal
+     * Retrieve submitted word to a Proposal Object.
      */
     public function getNewProposal(): Proposal
     {
-        $proposalWord = implode('', $_POST['wordle']);
+        $proposalWord = implode('', $_POST['wordle']); // devrait utiliser un objet tiers pour récupérer le post
         $proposalWord = strtolower($proposalWord);
+
         return new Proposal($proposalWord);
     }
 
     /**
-     * Compile current game to a serialized minimised array
-     * @return string
+     * Compile current game to a serialized minimised array.
      */
     public function compileSave(): string
     {
@@ -58,17 +56,18 @@ class Wordle
         foreach ($this->game->proposals as $proposal) {
             $game['proposals'][] = $proposal->word;
         }
+
         return serialize($game);
     }
 
     /**
-     * Decompile serialized array to a Game object
+     * Decompile serialized array to a Game object.
+     *
      * @param $compiledSave
-     * @return Game
      */
     public function decompileSave($compiledSave): Game
     {
-        $saveDecompiled = unserialize($compiledSave);
+        $saveDecompiled = unserialize($compiledSave); // devrait utilliser le tableau d'option pour restreindre les classes a désérialiser
         $savedGame = new Game($saveDecompiled['word']);
 
         foreach ($saveDecompiled['proposals'] as $proposal) {
@@ -80,17 +79,16 @@ class Wordle
     }
 
     /**
-     * Save compiled game in a cookie
+     * Save compiled game in a cookie.
      */
-    public function save()
+    public function save(): void
     {
         $saveCompiled = $this->compileSave();
         setcookie($this->cookieName, $saveCompiled, time() + 3600, '/');
     }
 
     /**
-     * Check if there are a save in the cookies
-     * @return bool
+     * Check if there are a save in the cookies.
      */
     public function hasSave(): bool
     {
@@ -98,19 +96,19 @@ class Wordle
     }
 
     /**
-     * Get a decompiled save from the save cookie
-     * @return Game
+     * Get a decompiled save from the save cookie.
      */
     public function getSave(): Game
     {
         $saveCompiled = $_COOKIE[$this->cookieName];
+
         return $this->decompileSave($saveCompiled);
     }
 
     /**
-     * Delete game cookie for reset a game
+     * Delete game cookie for reset a game.
      */
-    public function reset()
+    public function reset(): void
     {
         if (isset($_COOKIE[$this->cookieName])) {
             unset($_COOKIE[$this->cookieName]);
@@ -119,11 +117,14 @@ class Wordle
     }
 
     /**
-     * Process proposal checking and prevent same proposal on refresh
+     * Process proposal checking and prevent same proposal on refresh.
+     *
      * @return void
      */
-    public function processProposal(){
-        if ($this->hasNewProposal() && !$this->getGame()->getLastProposal() || ($this->game->getLastProposal() && $this->getNewProposal()->getWord() != $this->getGame()->getLastProposal()->getWord())){
+    public function processProposal(): void
+    {
+        // attention, ici il manque surement une paire de parentheses.
+        if ($this->hasNewProposal() && !$this->getGame()->getLastProposal() || ($this->game->getLastProposal() && $this->getNewProposal()->getWord() != $this->getGame()->getLastProposal()->getWord())) {
             $this->game->addProposal($this->getNewProposal());
             $this->game->checkLastProposal();
         }
